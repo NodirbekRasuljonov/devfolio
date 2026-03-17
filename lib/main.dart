@@ -1,4 +1,4 @@
-import 'package:devfolio/pages/intro.dart';
+import 'package:devfolio/const/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -9,11 +9,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+ const MyApp({super.key, });
+
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    AppRoutes appRoutes = AppRoutes();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -21,7 +23,9 @@ class MyApp extends StatelessWidget {
       
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: IntroPage()
+      onGenerateRoute: appRoutes.onGenerateRoute,
+      initialRoute: "/intro",
+    
     );
   }
 }

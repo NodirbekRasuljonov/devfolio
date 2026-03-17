@@ -74,7 +74,9 @@ class _IntroPageState extends State<IntroPage> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/home");
+              },
               child: Text(
                 "Welecome to DevFolio",
                 style: TextStyle(
