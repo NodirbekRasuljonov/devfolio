@@ -8,7 +8,7 @@ Scaffold MainPage(){
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Dev",
+                  text: "DEV",
                   style: TextStyle(
                     color: ColorsConst.kWhiteColor,
                     fontSize: 28.0,

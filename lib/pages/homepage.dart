@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:devfolio/const/colors_const.dart';
 import 'package:devfolio/pages/contactpage.dart';
 import 'package:devfolio/pages/mainpage.dart';

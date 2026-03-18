@@ -5,10 +5,14 @@ Scaffold ResumePage(){
   return Scaffold(
     backgroundColor: Colors.transparent,
     appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      centerTitle: false,
+      actionsPadding: EdgeInsets.only(right: 16.0),
+
       title: RichText(text: TextSpan(
         children: [
           TextSpan(
-            text: "RESU",
+            text: "RES",
             style: TextStyle(
               color: Colors.white,
               fontSize: 28.0,
@@ -16,7 +20,7 @@ Scaffold ResumePage(){
             ),
           ),
           TextSpan(
-            text: "ME",
+            text: "UME",
             style: TextStyle(
               color: ColorsConst.kCircleColor.withOpacity(0.9),
               fontSize: 28.0,
@@ -24,7 +28,23 @@ Scaffold ResumePage(){
             ),
           ),
         ],
-      )),
+      ),),actions: [
+       CircleAvatar(
+      
+            radius: 25.0,
+            backgroundColor: ColorsConst.kCircleColor,
+            
+            child: Icon(
+              
+              
+              Icons.file_download_outlined,
+              color: Colors.white,
+              size: 28.0,
+              
+            ),
+          ),
+        
+      ],
     ),
     body: Center(
       child: Text(
