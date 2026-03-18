@@ -79,63 +79,73 @@ class _HomePageState extends State<HomePage> {
           },
         ),
 
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: ColorsConst.kMainColor,
-          showUnselectedLabels: true,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                "assets/svg/home.svg",
-                color: selectedIndex == 0
-                    ? ColorsConst.kCircleColor.withOpacity(0.9)
-                    : ColorsConst.kWhiteColor,
+        bottomNavigationBar: Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: BottomNavigationBar(
+            
+            backgroundColor: ColorsConst.kMainColor,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            elevation: 0.0,
+            items: [
+              BottomNavigationBarItem(
+              
+                icon: SvgPicture.asset(
+                  "assets/svg/home.svg",
+                  color: selectedIndex == 0
+                      ? ColorsConst.kCircleColor.withOpacity(0.9)
+                      : ColorsConst.kWhiteColor,
+                ),
+                label: "Home",
               ),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                "assets/svg/projects.svg",
-                color: selectedIndex == 1
-                    ? ColorsConst.kCircleColor.withOpacity(0.9)
-                    : ColorsConst.kWhiteColor,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/projects.svg",
+                  color: selectedIndex == 1
+                      ? ColorsConst.kCircleColor.withOpacity(0.9)
+                      : ColorsConst.kWhiteColor,
+                ),
+                label: "Projects",
               ),
-              label: "Projects",
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                "assets/svg/cv.svg",
-                color: selectedIndex == 2
-                    ? ColorsConst.kCircleColor.withOpacity(0.9)
-                    : ColorsConst.kWhiteColor,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/cv.svg",
+                  color: selectedIndex == 2
+                      ? ColorsConst.kCircleColor.withOpacity(0.9)
+                      : ColorsConst.kWhiteColor,
+                ),
+                label: "Resume",
               ),
-              label: "Resume",
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                "assets/svg/contact.svg",
-                color: selectedIndex == 3
-                    ? ColorsConst.kCircleColor.withOpacity(0.9)
-                    : ColorsConst.kWhiteColor,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/contact.svg",
+                  color: selectedIndex == 3
+                      ? ColorsConst.kCircleColor.withOpacity(0.9)
+                      : ColorsConst.kWhiteColor,
+                ),
+                label: "Contact",
               ),
-              label: "Contact",
-            ),
-          ],
-          selectedItemColor: ColorsConst.kCircleColor.withOpacity(0.9), // label color when selected
-          unselectedItemColor: ColorsConst.kMainColor, // label color when not selected
-          currentIndex: selectedIndex,
-          onTap: (index) {
-            debugPrint("Selected Index: $index");
-            if (index != selectedIndex) {
-              setState(() {
-                selectedIndex = index;
-              });
-              pageController.animateToPage(
-                index,
-                duration: Duration(milliseconds: 100),
-                curve: Curves.easeInOut,
-              );
-            }
-          },
+            ],
+            selectedItemColor: ColorsConst.kCircleColor.withOpacity(0.9), // label color when selected
+            unselectedItemColor: ColorsConst.kWhiteColor, // label color when not selected
+            currentIndex: selectedIndex,
+            onTap: (index) {
+              debugPrint("Selected Index: $index");
+              if (index != selectedIndex) {
+                setState(() {
+                  selectedIndex = index;
+                });
+                pageController.animateToPage(
+                  index,
+                  duration: Duration(milliseconds: 100),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+          ),
         ),
       ),
     );
