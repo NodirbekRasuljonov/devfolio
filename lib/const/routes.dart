@@ -1,5 +1,6 @@
 import 'package:devfolio/pages/homepage.dart';
 import 'package:devfolio/pages/intro.dart';
+import 'package:devfolio/pages/projects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class AppRoutes {
             return HomePage();
           },
         );
+      
     }
     return null;
   }
