@@ -42,7 +42,9 @@ Scaffold ContactPage({
           backgroundColor: ColorsConst.kCircleColor,
 
           child: Icon(Icons.share_outlined, color: Colors.white, size: 28.0),
-        ),
+        ).onClick(() {
+          debugPrint("share pressed");
+        }),
       ],
     ),
     body: SingleChildScrollView(
@@ -68,33 +70,55 @@ Scaffold ContactPage({
                 debugPrint("Phone Pressed");
               },
             ),
-            Container(
-              height: 500.0,
+            SizedBox(height: 20.0),
+            SizedBox(
               width: double.infinity,
-              // color: Colors.amber,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Send a Message",
-                    style: TextStyle(
-                      color: ColorsConst.kWhiteColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18.0,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Send a Message",
+                        style: TextStyle(
+                          color: ColorsConst.kWhiteColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      Text(
+                        "I typically respond within 24 hours",
+                        style: TextStyle(
+                          color: ColorsConst.kTextColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "I typically respond within 24 hours",
-                    style: TextStyle(
-                      color: ColorsConst.kTextColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.0,
-                    ),
+                  SizedBox(height: 20.0),
+                  inputs(
+                    inputController: nameController,
+                    label: "FULL NAME",
+                    hint: "John Doe",
                   ),
-                  inputs(inputController: nameController, label: "FULL NAME", hint: "John Doe"),
-                  SizedBox(height: 20.0,),
-                  inputs(inputController: emailController, label: "EMAIL ADDRESS ", hint: "john@example.com")
+                  SizedBox(height: 20.0),
+                  inputs(
+                    inputController: emailController,
+                    label: "EMAIL ADDRESS ",
+                    hint: "john@example.com",
+                  ),
+                  SizedBox(height: 20.0),
+                  inputs(
+                    inputController: messageController,
+                    label: "MESSAGE",
+                    hint: "Tell me about your project",
+                  ),
+                  SizedBox(height: 20.0),
+                  sendBtn(),
                 ],
               ),
             ),
@@ -105,57 +129,84 @@ Scaffold ContactPage({
   );
 }
 
-SizedBox inputs({required TextEditingController inputController,required String label,required String hint}) {
-  return SizedBox(
-                  height: 75,
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: TextStyle(
-                          color: ColorsConst.kTextColor,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: inputController,
-                        cursorColor: ColorsConst.kCircleColor.withValues(alpha: 0.9),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: ColorsConst.kWhiteColor),
-                        
-                        decoration: InputDecoration(
-                          hintText: hint,
-                          hintStyle: TextStyle(color: ColorsConst.kTextColor),
-                        
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
-                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
-
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
-                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
-                            ),
-                          ),
-                          fillColor: ColorsConst.kTextColor,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ],
+ElevatedButton sendBtn() {
+  return ElevatedButton(
+                  onPressed: () {},
+                  child: Text("SEND"),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(500, 75.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusGeometry.circular(20.0),
+                    ),
+                    backgroundColor: ColorsConst.kCircleColor.withValues(
+                      alpha: 0.9,
+                    ),
+                    foregroundColor: ColorsConst.kWhiteColor,
+                    textStyle: TextStyle(
+                      color: ColorsConst.kWhiteColor,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
+                      
+                    ),
                   ),
                 );
+}
+
+SizedBox inputs({
+  required TextEditingController inputController,
+  required String label,
+  required String hint,
+}) {
+  return SizedBox(
+    width: double.infinity,
+    height: label == "MESSAGE" ? 245.0 : 75,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: ColorsConst.kTextColor,
+            fontSize: 12.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        TextFormField(
+          controller: inputController,
+          cursorColor: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+          textAlign: TextAlign.left,
+          maxLines: label == "MESSAGE" ? 8 : 1,
+          style: TextStyle(color: ColorsConst.kWhiteColor),
+
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: ColorsConst.kTextColor),
+
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: BorderSide(
+                color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: BorderSide(
+                color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+              ),
+            ),
+            fillColor: ColorsConst.kTextColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+              ),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 Widget contactCard({
@@ -169,7 +220,7 @@ Widget contactCard({
     alignment: Alignment.center,
     decoration: BoxDecoration(
       color: ColorsConst.kCircleColor.withValues(alpha: 0.1),
-      borderRadius: BorderRadius.circular(16.0),
+      borderRadius: BorderRadius.circular(20.0),
     ),
     child: ListTile(
       titleTextStyle: TextStyle(
