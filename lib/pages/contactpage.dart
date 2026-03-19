@@ -2,7 +2,11 @@ import 'package:devfolio/const/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:on_click/extensions/click_extension.dart';
 
-Scaffold ContactPage() {
+Scaffold ContactPage({
+  required TextEditingController nameController,
+  required TextEditingController emailController,
+  required messageController,
+}) {
   return Scaffold(
     backgroundColor: Colors.transparent,
     appBar: AppBar(
@@ -55,7 +59,7 @@ Scaffold ContactPage() {
                 debugPrint("email Pressed");
               },
             ),
-            SizedBox(height: 20.0,),
+            SizedBox(height: 20.0),
             contactCard(
               title: "CALL ME",
               subtitle: "+48 51 733 87 92",
@@ -64,13 +68,94 @@ Scaffold ContactPage() {
                 debugPrint("Phone Pressed");
               },
             ),
-            Container(height: 500.0,color: Colors.amber,)
-            
+            Container(
+              height: 500.0,
+              width: double.infinity,
+              // color: Colors.amber,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Send a Message",
+                    style: TextStyle(
+                      color: ColorsConst.kWhiteColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  Text(
+                    "I typically respond within 24 hours",
+                    style: TextStyle(
+                      color: ColorsConst.kTextColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  inputs(inputController: nameController, label: "FULL NAME", hint: "John Doe"),
+                  SizedBox(height: 20.0,),
+                  inputs(inputController: emailController, label: "EMAIL ADDRESS ", hint: "john@example.com")
+                ],
+              ),
+            ),
           ],
         ),
       ),
     ),
   );
+}
+
+SizedBox inputs({required TextEditingController inputController,required String label,required String hint}) {
+  return SizedBox(
+                  height: 75,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: TextStyle(
+                          color: ColorsConst.kTextColor,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: inputController,
+                        cursorColor: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: ColorsConst.kWhiteColor),
+                        
+                        decoration: InputDecoration(
+                          hintText: hint,
+                          hintStyle: TextStyle(color: ColorsConst.kTextColor),
+                        
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(
+                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(
+                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+                            ),
+                          ),
+                          fillColor: ColorsConst.kTextColor,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
+                            ),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
 }
 
 Widget contactCard({

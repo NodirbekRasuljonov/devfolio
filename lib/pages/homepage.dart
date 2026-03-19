@@ -18,6 +18,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController pageController;
   int selectedIndex = 0;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _HomePageState extends State<HomePage> {
             Projects(),
             
             ResumePage(),
-            ContactPage(),
+            ContactPage(nameController: nameController, emailController: emailController, messageController: messageController),
           ],
           
           
@@ -130,6 +133,9 @@ class _HomePageState extends State<HomePage> {
    @override
   void dispose() {
     pageController.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    messageController.dispose();
     super.dispose();
   }
 }
