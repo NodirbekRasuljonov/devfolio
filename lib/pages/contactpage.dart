@@ -132,7 +132,6 @@ Scaffold ContactPage({
 ElevatedButton sendBtn() {
   return ElevatedButton(
                   onPressed: () {},
-                  child: Text("SEND"),
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(500, 75.0),
                     shape: RoundedRectangleBorder(
@@ -149,6 +148,7 @@ ElevatedButton sendBtn() {
                       
                     ),
                   ),
+                  child: Text("SEND"),
                 );
 }
 
