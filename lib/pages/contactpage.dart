@@ -1,13 +1,63 @@
 import 'package:devfolio/const/colors_const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart' show FlutterPhoneDirectCaller;
 import 'package:on_click/extensions/click_extension.dart';
 
-Scaffold ContactPage({
-  required TextEditingController nameController,
-  required TextEditingController emailController,
-  required messageController,
-}) {
-  return Scaffold(
+class ContactPage extends StatefulWidget {
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController messageController;
+  const ContactPage({
+    super.key,
+    required this.nameController,
+    required this.emailController,
+    required this.messageController,
+  });
+
+  @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  String? emailError;
+  String? messageError;
+
+ 
+
+  bool validateEmail(String email) {
+    final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
+    return emailRegex.hasMatch(email);
+  }
+
+  void onSend() {
+    setState(() {
+      emailError = null;
+      messageError = null;
+      final email = widget.emailController.text.trim();
+      final message = widget.messageController.text.trim();
+      bool valid = true;
+      if (email.isEmpty || !validateEmail(email)) {
+        emailError = "Please enter a valid email address";
+        valid = false;
+      }
+      if (message.isEmpty) {
+        messageError = "Message cannot be empty";
+        valid = false;
+      }
+      if (valid) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Message sent!")),
+        );
+        widget.messageController.clear();
+      }
+    });
+  }
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
     backgroundColor: Colors.transparent,
     appBar: AppBar(
       backgroundColor: Colors.transparent,
@@ -66,8 +116,10 @@ Scaffold ContactPage({
               title: "CALL ME",
               subtitle: "+48 51 733 87 92",
               icon: Icons.phone_outlined,
-              onTab: () {
+              onTab: ()async {
+                await FlutterPhoneDirectCaller.callNumber("+48 51 733 87 92");
                 debugPrint("Phone Pressed");
+
               },
             ),
             SizedBox(height: 20.0),
@@ -101,24 +153,26 @@ Scaffold ContactPage({
                   ),
                   SizedBox(height: 20.0),
                   inputs(
-                    inputController: nameController,
+                    inputController: widget.nameController,
                     label: "FULL NAME",
                     hint: "John Doe",
                   ),
                   SizedBox(height: 20.0),
                   inputs(
-                    inputController: emailController,
+                    inputController: widget.emailController,
                     label: "EMAIL ADDRESS ",
                     hint: "john@example.com",
+                    errorText: emailError,
                   ),
                   SizedBox(height: 20.0),
                   inputs(
-                    inputController: messageController,
+                    inputController: widget.messageController,
                     label: "MESSAGE",
                     hint: "Tell me about your project",
+                    errorText: messageError,
                   ),
                   SizedBox(height: 20.0),
-                  sendBtn(),
+                  sendBtn(onSend),
                 ],
               ),
             ),
@@ -126,40 +180,46 @@ Scaffold ContactPage({
         ),
       ),
     ),
+  
   );
+
+
+ 
+  
 }
 
-ElevatedButton sendBtn() {
+
+ElevatedButton sendBtn(void Function()? onPressed) {
   return ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(500, 75.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(20.0),
-                    ),
-                    backgroundColor: ColorsConst.kCircleColor.withValues(
-                      alpha: 0.9,
-                    ),
-                    foregroundColor: ColorsConst.kWhiteColor,
-                    textStyle: TextStyle(
-                      color: ColorsConst.kWhiteColor,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w700,
-                      
-                    ),
-                  ),
-                  child: Text("SEND"),
-                );
+    onPressed: onPressed,
+    style: ElevatedButton.styleFrom(
+      fixedSize: Size(500, 75.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      backgroundColor: ColorsConst.kCircleColor.withValues(
+        alpha: 0.9,
+      ),
+      foregroundColor: ColorsConst.kWhiteColor,
+      textStyle: TextStyle(
+        color: ColorsConst.kWhiteColor,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    child: Text("SEND"),
+  );
 }
 
 SizedBox inputs({
   required TextEditingController inputController,
   required String label,
   required String hint,
+  String? errorText,
 }) {
   return SizedBox(
     width: double.infinity,
-    height: label == "MESSAGE" ? 245.0 : 75,
+    height: label == "MESSAGE" ? 265.0 : 95,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,12 +238,21 @@ SizedBox inputs({
           textAlign: TextAlign.left,
           maxLines: label == "MESSAGE" ? 8 : 1,
           style: TextStyle(color: ColorsConst.kWhiteColor),
-
           decoration: InputDecoration(
             hintText: hint,
+            
+            
             hintStyle: TextStyle(color: ColorsConst.kTextColor),
-
-            border: OutlineInputBorder(
+            errorText: errorText,            
+            errorStyle: TextStyle(
+              color: Colors.redAccent,
+              fontSize: 12.0,
+              height: 1.2,
+            ),
+            errorMaxLines: 2,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 18.0,
+            ),            border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),
               borderSide: BorderSide(
                 color: ColorsConst.kCircleColor.withValues(alpha: 0.9),
@@ -243,4 +312,5 @@ Widget contactCard({
       trailing: Icon(Icons.arrow_outward_outlined),
     ),
   ).onClick(onTab);
+}
 }
