@@ -19,7 +19,7 @@ Scaffold ResumePage() {
                 fontSize: 28.0,
                 fontWeight: FontWeight.w700,
               ),
-            ),
+            ), 
             TextSpan(
               text: "UME",
               style: TextStyle(
