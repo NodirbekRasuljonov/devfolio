@@ -1,6 +1,7 @@
 import 'package:devfolio/const/colors_const.dart' show ColorsConst;
 import 'package:devfolio/const/textconst.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 Scaffold MainPage() {
   TextConst texts = TextConst();
@@ -40,10 +41,12 @@ Scaffold MainPage() {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
+            childAspectRatio: 1.5,
           ),
+
           itemBuilder: (context, index) {
             return Container(
-              height: 100.0,
+              height: 80.0,
               width: 100.0,
               decoration: BoxDecoration(
                 color: ColorsConst.kCircleColor,
@@ -53,21 +56,24 @@ Scaffold MainPage() {
               child: Stack(
                 children: [
                   Positioned(
-                    child: Text(
-                      texts.list[index],
-                      style: TextStyle(
-                        color: ColorsConst.kWhiteColor,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    bottom: 10.0,
-                    left: 10.0,
+                    top: 35.0,
+                    right: 20.0,
+                    left: 20.0,
+                    bottom: 20.0,
+                    child: stack(texts, index),
                   ),
                   Positioned(
-                    child: Image.asset(texts.icons[index]),
                     top: 10.0,
-                    right: 10.0,
+                    left: 20.0,
+                    right: 20.0,
+                    child: SvgPicture.asset(
+                      texts.icons[index],
+                      height: 35.0,
+                      width: 35.0,
+
+                      
+                    ),
+                    
                   ),
                 ],
               ),
@@ -80,5 +86,35 @@ Scaffold MainPage() {
         ),
       ),
     ),
+  );
+}
+
+Container stack(TextConst texts, int index) {
+  return Container(
+    height: 30.0,
+    width: 85.0,
+    decoration: BoxDecoration(
+      color: ColorsConst.kMainColor.withOpacity(0.4),
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child:Stack(
+      children: [
+        Positioned(
+          bottom: 5.0,
+          left: 10.0,
+          right: 10.0,
+          child: Text(
+            texts.list[index],
+            style: TextStyle(
+              color: ColorsConst.kWhiteColor,
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    ),
+    
   );
 }

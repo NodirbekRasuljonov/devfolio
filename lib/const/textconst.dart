@@ -4,10 +4,10 @@ class TextConst{
     "Dart",
     "Firebase",
     "Figma",
-    "Git",
-    "Java",
-    "C#",
-    "C++"
+    // "Git",
+    // "Java",
+    // "C#",
+    // "C++"
   ];
 
 
