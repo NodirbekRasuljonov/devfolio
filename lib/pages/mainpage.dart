@@ -3,7 +3,7 @@ import 'package:devfolio/const/textconst.dart';
 import 'package:flutter/material.dart';
 
 Scaffold MainPage() {
-  TextConst texts=TextConst();
+  TextConst texts = TextConst();
   return Scaffold(
     backgroundColor: Colors.transparent,
     appBar: AppBar(
@@ -37,39 +37,47 @@ Scaffold MainPage() {
       child: SizedBox(
         height: double.infinity,
         width: double.infinity,
-        child:
-            GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemBuilder: (context, index) {
+            return Container(
+              height: 100.0,
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: ColorsConst.kCircleColor,
+                borderRadius: BorderRadius.circular(12.0),
               ),
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 100.0,
-                  width: 100.0,
-                  decoration: BoxDecoration(
-                    color: ColorsConst.kCircleColor,
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  margin: EdgeInsets.all(8.0),
-                  child: Center(
+              margin: EdgeInsets.all(8.0),
+              child: Stack(
+                children: [
+                  Positioned(
                     child: Text(
                       texts.list[index],
                       style: TextStyle(
-                        color: Colors.white,
+                        color: ColorsConst.kWhiteColor,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ) ,
-                );
-              },
-              itemCount: texts.list.length,
-              padding: EdgeInsets.all(10.0),
+                    bottom: 10.0,
+                    left: 10.0,
+                  ),
+                  Positioned(
+                    child: Image.asset(texts.icons[index]),
+                    top: 10.0,
+                    right: 10.0,
+                  ),
+                ],
+              ),
+            );
+          },
+          itemCount: texts.list.length,
+          padding: EdgeInsets.all(10.0),
 
-              shrinkWrap: true,
-
-            ),
-          
+          shrinkWrap: true,
+        ),
       ),
     ),
   );

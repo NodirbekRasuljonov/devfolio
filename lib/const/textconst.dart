@@ -9,4 +9,12 @@ class TextConst{
     "C#",
     "C++"
   ];
+
+
+  List<String> icons=[
+    "assets/svg/flutter.svg",
+    "assets/svg/dart.svg",
+    "assets/svg/firebase.svg",
+    "assets/svg/figma.svg",
+  ];
 }
