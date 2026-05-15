@@ -38,8 +38,69 @@ Scaffold MainPage() {
       child: SizedBox(
         height: double.infinity,
         width: double.infinity,
-        child: GridView.builder(
+        child: Column(
+          children: [
+            Container(
+              height: 150.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: ColorsConst.kCircleColor,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            )
+          ],
+            
+        )
+                    
+           
+      ),
+    ),
+  );
+}
+
+Container stack(TextConst texts, int index) {
+  return Container(
+    height: 30.0,
+    width: 85.0,
+    decoration: BoxDecoration(
+      color: ColorsConst.kMainColor.withOpacity(0.4),
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child:Stack(
+      children: [
+        Positioned(
+          bottom: 5.0,
+          left: 10.0,
+          right: 10.0,
+          child: Text(
+            texts.list[index],
+            style: TextStyle(
+              color: ColorsConst.kWhiteColor,
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    ),
+    
+  );
+}
+
+
+
+
+
+
+
+
+
+/**
+ * GridView.builder(
+          
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            
             crossAxisCount: 2,
             childAspectRatio: 1.5,
           ),
@@ -84,37 +145,4 @@ Scaffold MainPage() {
 
           shrinkWrap: true,
         ),
-      ),
-    ),
-  );
-}
-
-Container stack(TextConst texts, int index) {
-  return Container(
-    height: 30.0,
-    width: 85.0,
-    decoration: BoxDecoration(
-      color: ColorsConst.kMainColor.withOpacity(0.4),
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child:Stack(
-      children: [
-        Positioned(
-          bottom: 5.0,
-          left: 10.0,
-          right: 10.0,
-          child: Text(
-            texts.list[index],
-            style: TextStyle(
-              color: ColorsConst.kWhiteColor,
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    ),
-    
-  );
-}
+ */
