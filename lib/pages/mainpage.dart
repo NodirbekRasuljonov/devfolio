@@ -1,7 +1,6 @@
 import 'package:devfolio/const/colors_const.dart' show ColorsConst;
 import 'package:devfolio/const/textconst.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 Scaffold MainPage() {
   TextConst texts = TextConst();
@@ -40,7 +39,7 @@ Scaffold MainPage() {
         width: double.infinity,
         child: Column(
           children: [
-            Container(
+            Container (
               height: 150.0,
               width: double.infinity,
               decoration: BoxDecoration(

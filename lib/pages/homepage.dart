@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           unselectedItemColor: ColorsConst.kWhiteColor, // label color when not selected
           currentIndex: selectedIndex,
           onTap: (index) {
-            debugPrint("Selected Index: $index");
+            // debugPrint("Selected Index: $index");
             if (index != selectedIndex) {
               setState(() {
                 selectedIndex = index;

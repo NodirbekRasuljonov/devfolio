@@ -2,6 +2,7 @@ import 'package:devfolio/const/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart' show FlutterPhoneDirectCaller;
 import 'package:on_click/extensions/click_extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactPage extends StatefulWidget {
   final TextEditingController nameController;
@@ -107,8 +108,17 @@ class _ContactPageState extends State<ContactPage> {
               title: "EMAIL ME",
               subtitle: "nodirbekmaqsudjonovich@gmail.com",
               icon: Icons.email_outlined,
-              onTab: () {
-                debugPrint("email Pressed");
+              onTab: () async {
+                final Uri emailUri = Uri(
+                  scheme: 'mailto',
+                  path: 'nodirbekmaqsudjonovich@gmail.com',
+                );
+                if (await canLaunchUrl(emailUri)) {
+                  await launchUrl(emailUri);
+                  debugPrint("Email app opened");
+                } else {
+                  debugPrint("Could not launch email");
+                }
               },
             ),
             SizedBox(height: 20.0),
@@ -282,7 +292,7 @@ Widget contactCard({
   required String title,
   required String subtitle,
   required IconData icon,
-  required VoidCallback onTab,
+  required Future<void> Function() onTab,
 }) {
   return Container(
     height: 90.0,

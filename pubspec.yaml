@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^2.2.4
   on_click: ^1.1.4
   flutter_phone_direct_caller: ^2.2.1
+  url_launcher: ^6.1.0
 
 
 dev_dependencies:
