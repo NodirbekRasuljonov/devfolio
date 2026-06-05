@@ -21,7 +21,7 @@ dependencies {
 
 
 android {
-    namespace = "nodirbekmaqsudjonovich.devfolio"
+    namespace = "com.nodirbekmaqsudjonovich.devfolio"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
