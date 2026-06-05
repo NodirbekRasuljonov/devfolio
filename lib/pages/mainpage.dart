@@ -3,7 +3,7 @@ import 'package:devfolio/const/textconst.dart';
 import 'package:flutter/material.dart';
 
 Scaffold MainPage() {
-  TextConst texts = TextConst();
+  // TextConst texts = TextConst();
   return Scaffold(
     backgroundColor: Colors.transparent,
     appBar: AppBar(
