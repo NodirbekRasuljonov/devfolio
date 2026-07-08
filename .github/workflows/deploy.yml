@@ -16,7 +16,6 @@ jobs:
         with:
           flutter-version: '3.10.7'
           channel: 'stable'
-          cache: true
 
       - name: Enable web support
         run: flutter config --enable-web
