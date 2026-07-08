@@ -2,6 +2,7 @@ import 'package:devfolio/const/colors_const.dart' show ColorsConst;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: non_constant_identifier_names
 Scaffold ResumePage() {
   return Scaffold(
     backgroundColor: Colors.transparent,
