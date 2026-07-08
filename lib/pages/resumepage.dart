@@ -1,5 +1,6 @@
 import 'package:devfolio/const/colors_const.dart' show ColorsConst;
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Scaffold ResumePage() {
   return Scaffold(
@@ -32,15 +33,32 @@ Scaffold ResumePage() {
         ),
       ),
       actions: [
-        CircleAvatar(
-          radius: 25.0,
-          backgroundColor: ColorsConst.kCircleColor,
-
-          child: Icon(
-            Icons.file_download_outlined,
-            color: Colors.white,
-            size: 28.0,
-          ),
+        Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: () async {
+                final resumeUri = Uri.base.resolve('assets/cv/cv.pdf');
+                if (await canLaunchUrl(resumeUri)) {
+                  await launchUrl(resumeUri);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Unable to download resume. Please try again.'),
+                    ),
+                  );
+                }
+              },
+              child: CircleAvatar(
+                radius: 25.0,
+                backgroundColor: ColorsConst.kCircleColor,
+                child: Icon(
+                  Icons.file_download_outlined,
+                  color: Colors.white,
+                  size: 28.0,
+                ),
+              ),
+            );
+          },
         ),
       ],
     ),
