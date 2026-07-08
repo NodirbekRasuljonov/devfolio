@@ -38,7 +38,7 @@ Scaffold ResumePage() {
           builder: (context) {
             return GestureDetector(
               onTap: () async {
-                final resumeUri = Uri.base.resolve('assets/cv/cv.pdf');
+                final resumeUri = Uri.base.resolve('assets/assets/cv/cv.pdf');
                 if (await canLaunchUrl(resumeUri)) {
                   await launchUrl(resumeUri);
                 } else {
