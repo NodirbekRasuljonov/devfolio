@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-
 void main() async {
   usePathUrlStrategy();
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+  } catch (e, st) {
+    debugPrint('Firebase initialization skipped: $e');
+    debugPrint('$st');
+  }
+
   runApp(const MyApp());
 }
 
