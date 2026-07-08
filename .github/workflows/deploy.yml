@@ -15,10 +15,11 @@ jobs:
         run: |
           set -euo pipefail
           git clone --branch 3.10.7 --depth 1 https://github.com/flutter/flutter.git "$HOME/flutter"
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+          export PATH="$HOME/flutter/bin:$PATH"
           flutter --version
           flutter config --enable-web
           flutter precache --web
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
 
       - name: Enable web support
         run: flutter config --enable-web
