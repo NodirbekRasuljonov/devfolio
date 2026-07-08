@@ -1,0 +1,38 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        run: |
+          set -euo pipefail
+          git clone --branch 3.10.7 --depth 1 https://github.com/flutter/flutter.git "$HOME/flutter"
+          export PATH="$HOME/flutter/bin:$PATH"
+          flutter --version
+          flutter config --enable-web
+          flutter precache --web
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+      - name: Enable web support
+        run: flutter config --enable-web
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build web (release)
+        run: flutter build web --release --base-href /devfolio/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: build/web
