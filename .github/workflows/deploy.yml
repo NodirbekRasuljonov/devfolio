@@ -11,13 +11,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.10.7'
+      - name: Install Flutter 3.10.7 (manual)
+        run: |
+          set -euo pipefail
+          FLUTTER_VERSION=3.10.7
+          URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+          echo "Downloading Flutter ${FLUTTER_VERSION} from ${URL}"
+          rm -rf $HOME/flutter
+          mkdir -p $HOME/flutter
+          curl -sSfL "${URL}" -o flutter.tar.xz
+          tar xf flutter.tar.xz -C $HOME/flutter
+          echo "$HOME/flutter/flutter/bin" >> $GITHUB_PATH
+          flutter --version
+          flutter config --enable-web
+          flutter precache --web
 
-      - name: Enable web support
-        run: flutter config --enable-web
+      - name: Verify Flutter / Dart versions
+        run: |
+          flutter --version
+          dart --version || true
+          echo "Check Flutter releases JSON (first 200 bytes)"
+          curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | head -c 200 || true
 
       - name: Install dependencies
         run: flutter pub get
