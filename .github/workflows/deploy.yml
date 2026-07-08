@@ -11,15 +11,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Flutter
-        run: |
-          set -euo pipefail
-          git clone --branch 3.10.7 --depth 1 https://github.com/flutter/flutter.git "$HOME/flutter"
-          export PATH="$HOME/flutter/bin:$PATH"
-          flutter --version
-          flutter config --enable-web
-          flutter precache --web
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.7'
+          channel: 'stable'
+          cache: true
 
       - name: Enable web support
         run: flutter config --enable-web
