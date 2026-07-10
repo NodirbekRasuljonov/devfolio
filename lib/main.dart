@@ -1,6 +1,8 @@
 import 'package:devfolio/const/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'firebase_options.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
@@ -8,7 +10,16 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await Firebase.initializeApp();
+    if (kIsWeb) {
+      // On web we must provide FirebaseOptions. The generated
+      // `firebase_options.dart` (from `flutterfire configure`) exposes
+      // `DefaultFirebaseOptions.currentPlatform`.
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } else {
+      await Firebase.initializeApp();
+    }
   } catch (e, st) {
     debugPrint('Firebase initialization skipped: $e');
     debugPrint('$st');
