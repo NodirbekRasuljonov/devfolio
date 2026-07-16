@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'firebase_options.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'src/url_strategy_stub.dart'
+    if (dart.library.js_interop) 'src/url_strategy_web.dart' as url_strategy;
 
 void main() async {
-  usePathUrlStrategy();
+  url_strategy.configureUrlStrategy();
 
   WidgetsFlutterBinding.ensureInitialized();
   try {
