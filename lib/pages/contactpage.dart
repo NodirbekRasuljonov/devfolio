@@ -20,36 +20,69 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  String? nameError;
   String? emailError;
   String? messageError;
+  bool isSending = false;
 
   bool validateEmail(String email) {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
     return emailRegex.hasMatch(email);
   }
 
-  void onSend() {
+  Future<void> onSend() async {
+    final name = widget.nameController.text.trim();
+    final email = widget.emailController.text.trim();
+    final message = widget.messageController.text.trim();
+
+    final newNameError = name.isEmpty ? "Please enter your name" : null;
+    final newEmailError = (email.isEmpty || !validateEmail(email))
+        ? "Please enter a valid email address"
+        : null;
+    final newMessageError = message.isEmpty ? "Message cannot be empty" : null;
+
     setState(() {
-      emailError = null;
-      messageError = null;
-      final email = widget.emailController.text.trim();
-      final message = widget.messageController.text.trim();
-      bool valid = true;
-      if (email.isEmpty || !validateEmail(email)) {
-        emailError = "Please enter a valid email address";
-        valid = false;
-      }
-      if (message.isEmpty) {
-        messageError = "Message cannot be empty";
-        valid = false;
-      }
-      if (valid) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Message sent!")));
-        widget.messageController.clear();
-      }
+      nameError = newNameError;
+      emailError = newEmailError;
+      messageError = newMessageError;
     });
+
+    if (newNameError != null || newEmailError != null || newMessageError != null) {
+      return;
+    }
+
+    setState(() => isSending = true);
+
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'nodirbekmaqsudjonovich@gmail.com',
+      queryParameters: {
+        'subject': 'Portfolio contact from $name',
+        'body': 'Name: $name\nEmail: $email\n\n$message',
+      },
+    );
+
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Opening your email app to send the message..."),
+          ),
+        );
+        widget.nameController.clear();
+        widget.emailController.clear();
+        widget.messageController.clear();
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Could not open your email app")),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isSending = false);
+    }
   }
 
   Future<void> _shareOnTelegram() async {
@@ -344,6 +377,7 @@ class _ContactPageState extends State<ContactPage> {
                       inputController: widget.nameController,
                       label: "FULL NAME",
                       hint: "John Doe",
+                      errorText: nameError,
                     ),
                     SizedBox(height: 20.0),
                     inputs(
@@ -360,7 +394,7 @@ class _ContactPageState extends State<ContactPage> {
                       errorText: messageError,
                     ),
                     SizedBox(height: 20.0),
-                    sendBtn(onSend),
+                    sendBtn(isSending ? null : onSend),
                   ],
                 ),
               ),
@@ -371,7 +405,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  ElevatedButton sendBtn(void Function()? onPressed) {
+  ElevatedButton sendBtn(Future<void> Function()? onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -387,7 +421,16 @@ class _ContactPageState extends State<ContactPage> {
           fontWeight: FontWeight.w700,
         ),
       ),
-      child: Text("SEND"),
+      child: isSending
+          ? SizedBox(
+              width: 24.0,
+              height: 24.0,
+              child: CircularProgressIndicator(
+                color: ColorsConst.kWhiteColor,
+                strokeWidth: 2.5,
+              ),
+            )
+          : Text("SEND"),
     );
   }
 
