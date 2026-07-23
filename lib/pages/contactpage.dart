@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:devfolio/const/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart'
     show FlutterPhoneDirectCaller;
+import 'package:http/http.dart' as http;
 import 'package:on_click/extensions/click_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+const String _contactFunctionUrl =
+    'https://us-central1-devfolio-a136c.cloudfunctions.net/sendContactEmail';
 
 class ContactPage extends StatefulWidget {
   final TextEditingController nameController;
@@ -24,6 +30,7 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   String? emailError;
   String? messageError;
+  bool isSending = false;
 
   bool validateEmail(String email) {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
@@ -31,12 +38,16 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   void onSend() {
+    if (isSending) return;
+
+    final name = widget.nameController.text.trim();
+    final email = widget.emailController.text.trim();
+    final message = widget.messageController.text.trim();
+    bool valid = true;
+
     setState(() {
       emailError = null;
       messageError = null;
-      final email = widget.emailController.text.trim();
-      final message = widget.messageController.text.trim();
-      bool valid = true;
       if (email.isEmpty || !validateEmail(email)) {
         emailError = "Please enter a valid email address";
         valid = false;
@@ -45,13 +56,53 @@ class _ContactPageState extends State<ContactPage> {
         messageError = "Message cannot be empty";
         valid = false;
       }
-      if (valid) {
+    });
+
+    if (valid) {
+      _sendContactEmail(name: name, email: email, message: message);
+    }
+  }
+
+  Future<void> _sendContactEmail({
+    required String name,
+    required String email,
+    required String message,
+  }) async {
+    setState(() => isSending = true);
+
+    try {
+      final response = await http
+          .post(
+            Uri.parse(_contactFunctionUrl),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode({"name": name, "email": email, "message": message}),
+          )
+          .timeout(const Duration(seconds: 15));
+
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("Message sent!")));
         widget.messageController.clear();
+        widget.emailController.clear();
+        widget.nameController.clear();
+      } else {
+        debugPrint("Contact function returned ${response.statusCode}: ${response.body}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to send message. Please try again.")),
+        );
       }
-    });
+    } catch (e) {
+      debugPrint("Failed to send contact email: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to send message. Please try again.")),
+      );
+    } finally {
+      if (mounted) setState(() => isSending = false);
+    }
   }
 
   Future<void> _shareOnTelegram() async {
@@ -354,7 +405,7 @@ class _ContactPageState extends State<ContactPage> {
                       errorText: messageError,
                     ),
                     SizedBox(height: 20.0),
-                    sendBtn(onSend),
+                    sendBtn(isSending ? null : onSend),
                   ],
                 ),
               ),
@@ -381,7 +432,16 @@ class _ContactPageState extends State<ContactPage> {
           fontWeight: FontWeight.w700,
         ),
       ),
-      child: Text("SEND"),
+      child: isSending
+          ? SizedBox(
+              width: 24.0,
+              height: 24.0,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: ColorsConst.kWhiteColor,
+              ),
+            )
+          : Text("SEND"),
     );
   }
 
