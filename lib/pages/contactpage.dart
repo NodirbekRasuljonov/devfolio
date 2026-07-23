@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:devfolio/const/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart'
-    show FlutterPhoneDirectCaller;
 import 'package:http/http.dart' as http;
 import 'package:on_click/extensions/click_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -351,8 +349,16 @@ class _ContactPageState extends State<ContactPage> {
                 subtitle: "+48 51 733 87 92",
                 icon: Icons.phone_outlined,
                 onTab: () async {
-                  await FlutterPhoneDirectCaller.callNumber("+48 51 733 87 92");
-                  debugPrint("Phone Pressed");
+                  final Uri phoneUri = Uri(
+                    scheme: 'tel',
+                    path: '+48517338792',
+                  );
+                  if (await canLaunchUrl(phoneUri)) {
+                    await launchUrl(phoneUri);
+                    debugPrint("Phone dialer opened");
+                  } else {
+                    debugPrint("Could not launch phone dialer");
+                  }
                 },
               ),
               SizedBox(height: 20.0),
